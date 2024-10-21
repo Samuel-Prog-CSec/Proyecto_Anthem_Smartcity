@@ -1,15 +1,25 @@
-import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
 
-const AireSchema = new Schema({
-  puntoMuestreo: { type: String, required: true },
-  fecha: { type: Date, required: true },
-  H01: { type: Number },
-  H02: { type: Number },
-  // Agrega más campos según el formato del CSV
-  validaciones: {
-    H01: { type: String },  // Solo si el valor es 'V'
-    H02: { type: String },
-  }
+// Definimos el esquema de la colección Aire en MongoDB
+// PENDIENTE: COMPROBAR VALIDACIONES DE LOS CAMPOS
+const AireSchema = mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+  provincia: { type: Number },
+  municipio: { type: Number },
+  estacion: { type: Number },
+  magnitud: { type: Number },
+  punto_muestreo: { type: String },
+  ano: { type: Number },
+  mes: { type: Number, min: 1, max: 12 },
+  dia: { type: Number, min: 1, max: 31 },
+  h: [{ type: Number }], // Array para los campos H
+  v: [{ type: String }], // Array para los campos V
+}, {
+  timestamps: true // Añade createdAt y updatedAt automáticamente
 });
 
-export default model('Aire', AireSchema);
+// Añadir índices para mejorar el rendimiento de las consultas
+AireSchema.index({ PROVINCIA: 1, MUNICIPIO: 1, ESTACION: 1, MAGNITUD: 1 });
+
+// Exportamos el modelo Aire
+module.exports = mongoose.model('Aire', AireSchema);

@@ -1,20 +1,29 @@
 const mongoose = require('mongoose');
+require('dotenv').config(); // Cargar variables de entorno desde .env
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI, {
+        console.log('Intentando conectar a MongoDB...');
+        
+        const conn = await mongoose.connect(process.env.MONGO_URI_WIND, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false
         });
-
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-        
+        console.log(`Conexión a MongoDB establecida como: ${conn.connection.host}`);
     } catch (err) {
-        console.error(`Error: ${err.message}`);
+        console.error(`Error al conectar a MongoDB: ${err.message}`);
         process.exit(1);
     }
 };
 
-module.exports = connectDB;
+const disconnectDB = async () => {
+    try {
+        await mongoose.connection.close();
+        console.log('Conexión a MongoDB cerrada');
+    } catch (err) {
+        console.error(`Error al desconectar de MongoDB: ${err.message}`);
+        process.exit(1);
+    }
+};
+
+module.exports = { connectDB, disconnectDB };
