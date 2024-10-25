@@ -8,7 +8,7 @@ const loadCSVFiles = async () => {
   // Conectar a MongoDB
   await connectDB();
 
-  const directoryPath = path.join(__dirname, '../Aire');
+  const directoryPath = path.join(__dirname, 'C:/Users/samue/Desktop/dataset/datos_hpe/Aire');
   const files = fs.readdirSync(directoryPath).filter(file => file.endsWith('.csv'));
 
   for (const file of files) {
@@ -21,7 +21,7 @@ const loadCSVFiles = async () => {
       .on('data', async (row) => {
           // Mapea el CSV a tu modelo de Mongoose
           const nuevoDato = new Aire({
-            _id: new mongoose.Types.ObjectId(),
+            origen: file, // Nombre del archivo CSV de origen
             provincia: row.PROVINCIA,
             municipio: row.MUNICIPIO,
             estacion: row.ESTACION,
