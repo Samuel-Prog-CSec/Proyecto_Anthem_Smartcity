@@ -16,7 +16,7 @@ const AireSchema = mongoose.Schema({
   estacion: { type: Number, required: true },
   magnitud: { type: Number, required: true, enum: [1, 2, 3, 4, 5] }, // Enum si tiene valores específicos
   punto_muestreo: { type: String, required: true, match: /^[0-9]{8}_[0-9]_[0-9]{2}$/ },
-  ano: { type: Number, min: 2000, max: new Date().getFullYear(), required: true },
+  ano: { type: Number, min: 1900, max: new Date().getFullYear(), required: true },
   mes: { type: Number, min: 1, max: 12, required: true },
   dia: { type: Number, min: 1, max: 31, required: true },
   horas: { type: [HoraSchema], validate: [arrayLimit, '{PATH} debe tener máximo 24 horas'] }
